@@ -53,12 +53,43 @@ public class SpellingBee {
     //  that will find the substrings recursively.
     public void sort() {
         // YOUR CODE HERE
-
+        mergeSort(words, 0, words.size());
+        for (int i = 0; i < words.size(); i++) {
+            System.out.println();
+        }
     }
-    public boolean mergeSort(int[] arr, int low, int high) {
+    public ArrayList<String> mergeSort(ArrayList<String> arr, int low, int high) {
         if (high - low == 0) {
+            ArrayList<String> sorted = new ArrayList<>();
+            sorted.add(arr.get(0));
+            return sorted;
+        }
+        int mid = (high + low) / 2;
+        ArrayList<String> arr1 = mergeSort(arr, low, mid);
+        ArrayList<String> arr2 = mergeSort(arr, mid + 1, high);
+        return merge(arr1, arr2);
+    }
+
+    public ArrayList<String> merge (ArrayList<String> arr1, ArrayList<String> arr2) {
+        ArrayList<String> merge = new ArrayList<>();
+        int index = 0;
+        int index2 = 0;
+        while (index < arr1.size() && index2 < arr2.size()) {
+            if (arr1.get(index).compareTo(arr2.get(index2)) < 0) {
+                merge.add(arr1.get(index++));
+            }
+            else {
+                merge.add(arr2.get(index++));
+            }
 
         }
+        while (index < arr1.size()) {
+            merge.add(arr1.get(index++));
+        }
+        while (index2 < arr2.size()) {
+            merge.add(arr2.get(index2++));
+        }
+        return merge;
     }
 
     // Removes duplicates from the sorted list.
