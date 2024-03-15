@@ -45,22 +45,29 @@ public class SpellingBee {
     //  that will find the substrings recursively.
     public void generate() {
         // YOUR CODE HERE — Call your recursive method!
-
-
+        makeWords("", letters);
+    }
+    public void makeWords(String word, String letters) {
+        if (letters.isEmpty() && !words.contains(word)) {
+            words.add(word);
+        }
+        for (int i = 0; i < letters.length(); i++) {
+            makeWords(word + letters.charAt(i), letters.substring(0, i) + letters.substring(i + 1));
+        }
+        if (!words.contains(word)) {
+            words.add(word);
+        }
     }
 
     // TODO: Apply mergesort to sort all words. Do this by calling ANOTHER method
     //  that will find the substrings recursively.
     public void sort() {
         // YOUR CODE HERE
-        mergeSort(words, 0, words.size());
-        for (int i = 0; i < words.size(); i++) {
-            System.out.println();
-        }
+        mergeSort(words, 0, words.size() - 1);
     }
     public ArrayList<String> mergeSort(ArrayList<String> arr, int low, int high) {
         if (high - low == 0) {
-            ArrayList<String> sorted = new ArrayList<>();
+            ArrayList<String> sorted = new ArrayList<String>();
             sorted.add(arr.get(0));
             return sorted;
         }
@@ -71,7 +78,7 @@ public class SpellingBee {
     }
 
     public ArrayList<String> merge (ArrayList<String> arr1, ArrayList<String> arr2) {
-        ArrayList<String> merge = new ArrayList<>();
+        ArrayList<String> merge = new ArrayList<String>();
         int index = 0;
         int index2 = 0;
         while (index < arr1.size() && index2 < arr2.size()) {
@@ -79,7 +86,7 @@ public class SpellingBee {
                 merge.add(arr1.get(index++));
             }
             else {
-                merge.add(arr2.get(index++));
+                merge.add(arr2.get(index2++));
             }
 
         }
@@ -109,7 +116,7 @@ public class SpellingBee {
     public void checkWords() {
         // YOUR CODE HERE
         for (int i = 0; i < words.size(); i++) {
-            if (!binarySearch(words.get(i), 0, words.size())) {
+            if (!binarySearch(words.get(i), 0, DICTIONARY_SIZE - 1)) {
                 words.remove(i);
                 i--;
             }
@@ -124,11 +131,11 @@ public class SpellingBee {
         else if (low == high) {
             return false;
         }
-        if (word.compareTo(DICTIONARY[mid]) > 0) {
-            return binarySearch(word, mid + 1, high);
+        if (word.compareTo(DICTIONARY[mid]) < 0) {
+            return binarySearch(word, low, mid);
         }
         else {
-            return binarySearch(word, low, mid - 1);
+            return binarySearch(word, mid + 1, high);
         }
     }
 
